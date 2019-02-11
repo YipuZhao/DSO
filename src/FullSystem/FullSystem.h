@@ -126,7 +126,18 @@ inline bool eigenTestNan(const MatXX &m, std::string msg)
 }
 
 
+class timeLog {
+public:
+  timeLog(const double &t0, const double &t1, const double &t2) {
+    time_stamp = t0;
+    time_cost_1 = t1;
+    time_cost_2 = t2;
+  };
 
+  double time_stamp;
+  double time_cost_1;
+  double time_cost_2;
+};
 
 
 class FullSystem {
@@ -146,6 +157,8 @@ public:
 
 	void printResult(std::string file);
 
+    void saveTimeLog(std::string file);
+
 	void debugPlot(std::string name);
 
 	void printFrameLifetimes();
@@ -161,6 +174,11 @@ public:
 
 	void setGammaFunction(float* BInv);
 	void setOriginalCalib(const VecXf &originalCalib, int originalW, int originalH);
+
+
+    std::vector<timeLog> logTimeCost;
+
+    std::ofstream f_realTimeTrack;
 
 private:
 

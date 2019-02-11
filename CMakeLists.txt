@@ -2,11 +2,11 @@ SET(PROJECT_NAME DSO)
 
 PROJECT(${PROJECT_NAME})
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-#set(CMAKE_VERBOSE_MAKEFILE ON)
+# set(CMAKE_VERBOSE_MAKEFILE ON)
 
 
 set(BUILD_TYPE Release)
-#set(BUILD_TYPE RelWithDebInfo)
+# set(BUILD_TYPE RelWithDebInfo)
 
 set(EXECUTABLE_OUTPUT_PATH bin)
 set(LIBRARY_OUTPUT_PATH lib)
@@ -14,18 +14,36 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 # required libraries
 find_package(SuiteParse REQUIRED)
-find_package(Eigen3 REQUIRED)
+
+# customize eigen dir
+# find_package(Eigen3 3.1.0 REQUIRED)
+set( EIGEN3_INCLUDE_DIR /usr/include/eigen3 )
+MESSAGE("EIGEN include dir: " ${EIGEN3_INCLUDE_DIR})
+
 find_package(Boost COMPONENTS system thread) 
 
 # optional libraries
 find_package(LibZip QUIET)
-find_package(Pangolin 0.2 QUIET)
-find_package(OpenCV QUIET)
+
+# customize pangolin dir
+# set(Pangolin_DIR /opt/Pangolin/lib/cmake/Pangolin/)
+# find_package(Pangolin REQUIRED)
+set(Pangolin_FOUND TRUE)
+set(Pangolin_INCLUDE_DIRS /opt/Pangolin/include/)
+set(Pangolin_LIBRARIES /opt/Pangolin/lib/libpangolin.so)
+MESSAGE("Pangolin include dir: " ${Pangolin_INCLUDE_DIRS})
+
+# customize opencv dir
+# set(OpenCV_DIR /opt/opencv3/share/OpenCV)
+# find_package(OpenCV 3.4.1 REQUIRED)
+set(OpenCV_DIR /opt/opencv2/share/OpenCV)
+find_package(OpenCV 2.4.13 REQUIRED core ocl)
+MESSAGE("OpenCV include dir: " ${OpenCV_INCLUDE_DIRS})
 
 # flags
 add_definitions("-DENABLE_SSE")
 set(CMAKE_CXX_FLAGS
-   "${SSE_FLAGS} -O3 -g -std=c++0x -march=native"
+   "${SSE_FLAGS} -pthread -O3 -g -std=c++0x -march=native"
 #   "${SSE_FLAGS} -O3 -g -std=c++0x -fno-omit-frame-pointer"
 )
 
@@ -80,6 +98,15 @@ else ()
 	set(HAS_PANGOLIN 0)
 endif ()
 
+
+set(GL_LIBRARIES     
+	GL
+    glut
+    GLU
+    GLEW)
+
+
+
 # decide if we have openCV
 if (OpenCV_FOUND)
 	message("--- found OpenCV, compiling dso_opencv library.")
@@ -125,7 +152,7 @@ endif()
 if (OpenCV_FOUND AND Pangolin_FOUND)
 	message("--- compiling dso_dataset.")
 	add_executable(dso_dataset ${PROJECT_SOURCE_DIR}/src/main_dso_pangolin.cpp )
-    target_link_libraries(dso_dataset dso boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${Pangolin_LIBRARIES} ${OpenCV_LIBS})
+    target_link_libraries(dso_dataset dso boost_system cxsparse ${BOOST_THREAD_LIBRARY} ${LIBZIP_LIBRARY} ${GL_LIBRARIES} ${Pangolin_LIBRARIES} ${OpenCV_LIBS})
 else()
 	message("--- not building dso_dataset, since either don't have openCV or Pangolin.")
 endif()

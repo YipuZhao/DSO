@@ -30,6 +30,11 @@
 #include <cmath>
 
 
+//#define ON_EuRoC
+#define ON_TUM_RGBD
+//#define ON_NUIM
+
+
 namespace dso
 {
 #define SOLVER_SVD (int)1
