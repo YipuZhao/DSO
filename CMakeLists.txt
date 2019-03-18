@@ -34,10 +34,10 @@ set(Pangolin_LIBRARIES /opt/Pangolin/lib/libpangolin.so)
 MESSAGE("Pangolin include dir: " ${Pangolin_INCLUDE_DIRS})
 
 # customize opencv dir
-# set(OpenCV_DIR /opt/opencv3/share/OpenCV)
-# find_package(OpenCV 3.4.1 REQUIRED)
-set(OpenCV_DIR /opt/opencv2/share/OpenCV)
-find_package(OpenCV 2.4.13 REQUIRED core ocl)
+set(OpenCV_DIR /opt/opencv3/share/OpenCV)
+find_package(OpenCV 3.4.1 REQUIRED)
+# set(OpenCV_DIR /opt/opencv2/share/OpenCV)
+# find_package(OpenCV 2.4.13 REQUIRED core ocl)
 MESSAGE("OpenCV include dir: " ${OpenCV_INCLUDE_DIRS})
 
 # flags
@@ -45,6 +45,8 @@ add_definitions("-DENABLE_SSE")
 set(CMAKE_CXX_FLAGS
    "${SSE_FLAGS} -pthread -O3 -g -std=c++0x -march=native"
 #   "${SSE_FLAGS} -O3 -g -std=c++0x -fno-omit-frame-pointer"
+# Flags used in GF_ORB_SLAM
+# "${SSE_FLAGS} -pthread -O3 -g -std=c++0x -ffast-math -flto -march=armv8-a+crypto -mcpu=cortex-a57+crypto"
 )
 
 if (MSVC)
