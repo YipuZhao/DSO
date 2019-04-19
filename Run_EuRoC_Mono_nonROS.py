@@ -52,7 +52,8 @@ for ri, num_gf in enumerate(Number_GF_List):
             Path_Image   = '/mnt/DATA/Datasets/EuRoC_dataset/' + SeqName + '/cam0/data'
             File_traj = Experiment_dir + '/' + SeqName
 
-            cmd_slam   = str('./build/bin/dso_dataset files=' + Path_Image + ' calib=' + File_Calib + ' gamma=' + File_Gamma + ' vignette=' + File_Vignette + ' preset='  + str(int(num_gf)) + ' realtime=' + File_traj + Misc_Config)
+            cmd_slam   = str('./build/bin/dso_dataset files=' + Path_Image + ' calib=' + File_Calib + ' gamma=' + File_Gamma + \
+                ' vignette=' + File_Vignette + ' preset='  + str(int(num_gf)) + ' realtime=' + File_traj + Misc_Config)
             
             print bcolors.WARNING + "cmd_slam: \n"   + cmd_slam   + bcolors.ENDC
 

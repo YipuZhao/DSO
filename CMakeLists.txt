@@ -34,10 +34,15 @@ set(Pangolin_LIBRARIES /opt/Pangolin/lib/libpangolin.so)
 MESSAGE("Pangolin include dir: " ${Pangolin_INCLUDE_DIRS})
 
 # customize opencv dir
-# set(OpenCV_DIR /opt/opencv3/share/OpenCV)
-# find_package(OpenCV 3.4.1 REQUIRED)
-set(OpenCV_DIR /opt/opencv2/share/OpenCV)
-find_package(OpenCV 2.4.13 REQUIRED core ocl)
+if ($ENV{ROS_DISTRO} STREQUAL "indigo")
+    set( OpenCV_DIR /opt/opencv2/share/OpenCV )
+    find_package(OpenCV 2.4.13 REQUIRED core ocl)
+elseif ($ENV{ROS_DISTRO} STREQUAL "kinetic")
+    set( OpenCV_DIR /opt/opencv3/share/OpenCV )
+    find_package(OpenCV 3.4.0 REQUIRED)
+endif()
+# set(OpenCV_DIR /opt/opencv2/share/OpenCV)
+# find_package(OpenCV 2.4.13 REQUIRED core ocl)
 MESSAGE("OpenCV include dir: " ${OpenCV_INCLUDE_DIRS})
 
 # flags
@@ -101,8 +106,8 @@ endif ()
 
 set(GL_LIBRARIES     
 	GL
-    glut
-    GLU
+ #   glut
+ #   GLU
     GLEW)
 
 
