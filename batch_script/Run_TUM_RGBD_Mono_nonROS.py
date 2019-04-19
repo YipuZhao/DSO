@@ -5,11 +5,12 @@ import subprocess
 import time
 import signal
 
-# SeqNameList = ['MH_01_easy', 'MH_02_easy', 'MH_03_medium', 'MH_04_difficult', 'MH_05_difficult', 'V1_01_easy', 'V2_01_easy', 'V2_02_medium'];
-# SeqNameList = ['V1_01_easy'];
-SeqNameList = ['MH_01_easy', 'MH_02_easy', 'MH_03_medium', 'MH_04_difficult', 'MH_05_difficult', 'V1_01_easy', 'V1_02_medium', 'V1_03_difficult', 'V2_01_easy', 'V2_02_medium', 'V2_03_difficult'];
+SeqNameList = ['freiburg2_desk_with_person', 'freiburg2_360_hemisphere'];
+TumTypeList = ['freiburg2', 'freiburg2']; 
+# SeqNameList = ['freiburg2_desk', 'freiburg3_long_office_household', 'not_exist'];
+# TumTypeList = ['freiburg2', 'freiburg3', ' ']; 
 
-Result_root = '/mnt/DATA/tmp/EuRoC/DSO_Mono_Baseline/'
+Result_root = '/mnt/DATA/tmp/TUM_RGBD/DSO_Baseline/'
 
 Number_GF_List =  [200, 300, 400, 600, 800, 1000, 1500, 2000];
 
@@ -44,16 +45,15 @@ for ri, num_gf in enumerate(Number_GF_List):
             SeqName = SeqNameList[sn]
             print bcolors.ALERT + "Round: " + str(iteration + 1) + "; Seq: " + SeqName
 
-            File_Calib = './calib/EuRoC_Mono_calib.txt'
+            File_Calib = '../calib/TUM_' + TumTypeList[sn] + '_Mono_calib.txt'
             File_Gamma = ' '
             File_Vignette = ' '
             Misc_Config = ' mode=1 nolog=1 quiet=1 nogui=1'
 
-            Path_Image   = '/mnt/DATA/Datasets/EuRoC_dataset/' + SeqName + '/cam0/data'
+            Path_Image   = '/mnt/DATA/Datasets/TUM_RGBD/rgbd_dataset_' + SeqName + '/rgb'
             File_traj = Experiment_dir + '/' + SeqName
 
-            cmd_slam   = str('./build/bin/dso_dataset files=' + Path_Image + ' calib=' + File_Calib + ' gamma=' + File_Gamma + \
-                ' vignette=' + File_Vignette + ' preset='  + str(int(num_gf)) + ' realtime=' + File_traj + Misc_Config)
+            cmd_slam   = str('../build/bin/dso_dataset files=' + Path_Image + ' calib=' + File_Calib + ' gamma=' + File_Gamma + ' vignette=' + File_Vignette + ' preset='  + str(int(num_gf)) + ' realtime=' + File_traj + Misc_Config)
             
             print bcolors.WARNING + "cmd_slam: \n"   + cmd_slam   + bcolors.ENDC
 
