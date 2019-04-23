@@ -908,14 +908,10 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, int id )
 
         }
 
-
-
-
         for(IOWrap::Output3DWrapper* ow : outputWrapper)
             ow->publishCamPose(fh->shell, &Hcalib);
 
-
-        double time_cost_1 = ( std::clock() - timer_st ) / (double) CLOCKS_PER_SEC;
+        double time_track_coarse = ( std::clock() - timer_st ) / (double) CLOCKS_PER_SEC;
 
 
         // write real time tracking results to file
@@ -933,10 +929,10 @@ void FullSystem::addActiveFrame( ImageAndExposure* image, int id )
 
         deliverTrackedFrame(fh, needToMakeKF);
 
-        double time_cost_2 = ( std::clock() - timer_st ) / (double) CLOCKS_PER_SEC;
+        double time_send_kf = ( std::clock() - timer_st ) / (double) CLOCKS_PER_SEC;
 
         // save the time count into log struct
-        logTimeCost.push_back(timeLog(fh->shell->timestamp, time_cost_1, time_cost_2));
+        logTimeCost.push_back(timeLog(fh->shell->timestamp, time_track_coarse, time_send_kf));
 
         return;
     }
